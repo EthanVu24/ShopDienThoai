@@ -1,0 +1,80 @@
+﻿@model PagedList.IPagedList<ShopDienThoai.Models.tai_khoan>
+@using PagedList.Mvc;
+@{
+    int count = 0;
+}
+
+<table class="table table-bordered table-hover w-full align-middle text-center">
+    <thead>
+        <tr>
+            <th>STT</th>
+            <th>Ảnh đại diện</th>
+            <th>Mã khách hàng</th>
+            <th>Họ tên</th>
+            <th>Email</th>
+            <th>Trạng thái</th>
+            <th>Chức năng</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            count++;
+            <tr>
+                <td>@count</td>
+                <td>
+                    @if (item.anh_dai_dien == null)
+                    {
+                        <div class="rounded-circle bg-dark-subtle mx-auto" style="width: 50px; height: 50px;"></div>
+                    }
+                    else
+                    {
+                        <img src="data:image/jpg;base64,@Convert.ToBase64String(item.anh_dai_dien)" class="rounded-circle d-block mx-auto object-fit-cover" height="50" width="50" />
+                    }
+                </td>
+                <td>@item.id</td>
+                <td>@item.ho_ten</td>
+                <td>@item.email</td>
+                <td>
+                    @if (item.trang_thai == true)
+                    {
+                        <div class="btn bg-success text-white btn-sm d-flex align-items-center py-1">
+                            <div class="spinner-border spinner-border-sm" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <span class="flex-grow-1">Hoạt động</span>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="btn bg-danger text-white btn-sm d-flex align-items-center py-1">
+                            <div class="spinner-border spinner-border-sm" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <span class="flex-grow-1">Bị khoá</span>
+                        </div>
+                    }
+                </td>
+                <td>
+                    <div class="d-flex align-items-center justify-content-center column-gap-3">
+                        <a href="@Url.Action("ClientEdit","Admin", new { id = item.id })" class="text-primary" title="Sửa tài khoản">
+                            <i class="fa-solid fa-pen"></i>
+                        </a>
+                        <a href="@Url.Action("ClientLock","Admin", new { id = item.id })" class="text-danger" title="Khoá tài khoản">
+                            <i class="fa-solid fa-lock"></i>
+                        </a>
+                        <a href="@Url.Action("ClientDelete","Admin", new { id = item.id })" class="text-body-secondary" title="Xoá tài khoản" onclick="return confirm('Bạn có muốn xoá tài khoản?')">
+                            <i class="fa-solid fa-trash"></i>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@Html.PagedListPager(Model, page => Url.Action("ClientSearch", new { page }),
+new PagedListRenderOptions
+{
+    LiElementClasses = new List<string> { "page-client" },
+})
+

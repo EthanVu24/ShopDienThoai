@@ -1,0 +1,45 @@
+﻿@model IEnumerable<ShopDienThoai.Models.chi_tiet_hoa_don>
+@{
+    ViewBag.Title = "Đơn hàng";
+    Layout = "~/Views/Admin/Layout/_Layout.cshtml";
+    int count = 0;
+}
+
+<div class="p-4">
+    <h1 class="fw-bold text-uppercase text-dark-emphasis">@ViewBag.Title</h1>
+    <div class="mt-3">
+        <table class="table table-bordered table-hover w-full align-middle text-center">
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Mã KH</th>
+                    <th>Họ tên</th>
+                    <th>Email</th>
+                    <th>Sản phẩm</th>
+                    <th>Đơn giá</th>
+                    <th>SL</th>
+                    <th>Thành tiền</th>
+                    <th>Ngày đặt</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    count++;
+                    <tr>
+                        <td>@count</td>
+                        <td>@item.hoa_don.tai_khoan.id</td>
+                        <td>@item.hoa_don.tai_khoan.ho_ten</td>
+                        <td>@item.hoa_don.tai_khoan.email</td>
+                        <td>@item.san_pham.ten_san_pham</td>
+                        <td>@item.san_pham.don_gia.ToString("N0") VNĐ</td>
+                        <td>@item.so_luong</td>
+                        <td>@item.thanh_tien.ToString("N0") VNĐ</td>
+                        <td>@string.Format("{0:dd/MM/yyyy}", item.ngay_mua)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

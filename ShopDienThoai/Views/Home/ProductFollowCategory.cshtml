@@ -1,0 +1,52 @@
+﻿@model IEnumerable<ShopDienThoai.Models.san_pham>
+@using System.Globalization
+@{
+    ViewBag.Title = "Điện thoại";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string FormatPrice(long don_gia, int? giam_gia)
+    {
+        long? price = 0;
+        if (giam_gia.HasValue)
+        {
+            price = don_gia - (don_gia * giam_gia / 100);
+        }
+        else
+        {
+            price = don_gia;
+        }
+        CultureInfo culture = new CultureInfo("vi-VN");
+        string formattedAmount = string.Format(culture, "{0:0,0}", price);
+        return formattedAmount;
+    }
+}
+
+<div class="container my-5">
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-3">
+                <div class="text-center" style="min-height: 490.4px;">
+                    <figure class="bg-white py-3">
+                        @if (item.anh_san_pham != null)
+                        {
+                            <img src="data:image/jpg;base64,@Convert.ToBase64String(item.anh_san_pham)" alt="" class="object-fit-contain" height="300">
+                        }
+                        else
+                        {
+                            <img src="https://img.freepik.com/free-vector/oops-404-error-with-broken-robot-concept-illustration_114360-5529.jpg?w=740&t=st=1706538140~exp=1706538740~hmac=018ca23f3df63d3910e2643a461379f04b85c110ac70a1cc66d69661e55d4069" alt="" class="object-fit-contain" height="300">
+                        }
+                        <h5 class="pt-3"><a href="/dien-thoai?id=@item.id" class="text-primary">@(item.ten_san_pham + " " + item.chi_tiet_san_pham.rom) GB</a></h5>
+                        <p class="mb-0 text-decoration-line-through" style="height: 27.2px;">
+                            @if (item.giam_gia > 0)
+                            {
+                                @FormatPrice(item.don_gia, null)
+                            }
+                        </p>
+                        <p class="text-danger fw-bold">@FormatPrice(item.don_gia, item.giam_gia) VNĐ</p>
+                    </figure>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+

@@ -1,0 +1,115 @@
+﻿:root {
+    --bg-color: #F3F3F3;
+    --primary-color: #FFD400;
+    --white-color: #FFF;
+}
+
+body {
+    background-color: var(--bg-color);
+    scroll-behavior: smooth;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: #fafafa;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 40px;
+    background-color: var(--primary-color);
+}
+
+a {
+    /*color: var(--primary-color) !important;*/
+    text-decoration: none !important;
+}
+
+.text-primary {
+    color: var(--primary-color) !important;
+}
+
+.btn{
+    font-weight: 700;
+}
+
+.border-primary{
+    border-color: var(--primary-color) !important;
+}
+
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:visited {
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+}
+
+.btn-outline-primary {
+    color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+}
+
+.btn-outline-primary:hover {
+    color: var(--white-color) !important;
+    background-color: var(--primary-color) !important;
+}
+
+.bg-primary {
+    background-color: var(--primary-color) !important;
+}
+
+.sub-item {
+    cursor: pointer;
+}
+
+.sub-item:hover {
+    background-color: rgba(0,0,0,0.25);
+}
+
+.sub-item.show + .sub-menu {
+    display: block;
+}
+
+.sub-menu {
+    display: none;
+}
+
+.sub-menu a:hover{
+    background-color: rgba(0,0,0,0.25);
+}
+
+.divider:after,
+.divider:before {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #eee;
+}
+
+#hambuger {
+    cursor: pointer;
+}
+
+#content.extend {
+    margin-left: 0px !important;
+}
+
+.image_thumb{
+    display: grid;
+    place-items: center;
+    width: 100px;
+    height: 130px;
+    border: 1px solid red;
+    cursor: pointer;
+}
+
+.image_thumb i{
+    color: red;
+}
+
+table td {
+    padding: 20px !important;
+}

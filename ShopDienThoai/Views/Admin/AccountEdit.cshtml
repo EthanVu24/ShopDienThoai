@@ -1,0 +1,58 @@
+﻿@model ShopDienThoai.Models.tai_khoan
+@{
+    ViewBag.Title = "Cập nhật tài khoản";
+    Layout = "~/Views/Admin/Layout/_Layout.cshtml";
+}
+
+<div class="p-4">
+    <h1 class="fw-bold text-uppercase text-dark-emphasis">@ViewBag.Title</h1>
+    <div class="mt-4">
+        @using (Html.BeginForm("AccountEdit", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="row row-gap-3">
+                <div class="col-12">
+                    @Html.LabelFor(model => model.anh_dai_dien, htmlAttributes: new { @class = "form-label" })
+                    <div>
+                        <input type="file" name="avatar" class="form-control" />
+                    </div>
+                </div>
+                <div class="col-6">
+                    <span class="text-danger">*</span>
+                    @Html.LabelFor(model => model.ho_ten, htmlAttributes: new { @class = "form-label" })
+                    <div>
+                        @Html.EditorFor(model => model.ho_ten, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ho_ten, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-6">
+                    <span class="text-danger">*</span>
+                    @Html.LabelFor(model => model.email, htmlAttributes: new { @class = "form-label" })
+                    <div>
+                        @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.email, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-6">
+                    <span class="text-danger">*</span>
+                    @Html.LabelFor(model => model.mat_khau, htmlAttributes: new { @class = "form-label" })
+                <div>
+                    @Html.EditorFor(model => model.mat_khau, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.mat_khau, "", new { @class = "text-danger" })
+                </div>
+                </div>
+                <div class="col-6">
+                    <label class="form-label">Vai trò</label>
+                    @Html.DropDownList("id_vai_tro", null, htmlAttributes: new { @class = "form-select" })
+                </div>
+            </div>
+            <div class="mt-4 d-flex align-items-center column-gap-2">
+                <a href="/admin/account" class="btn btn-outline-danger rounded-0">Huỷ</a>
+                <button class="btn btn-success rounded-0" type="submit">Lưu</button>
+            </div>
+        }
+    </div>
+</div>
+

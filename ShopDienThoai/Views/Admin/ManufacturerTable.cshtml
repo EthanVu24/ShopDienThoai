@@ -1,0 +1,43 @@
+﻿@model PagedList.IPagedList<ShopDienThoai.Models.hang_san_xuat>
+@using PagedList.Mvc;
+@{
+    int count = 0;
+}
+
+<table class="table table-bordered table-hover w-full align-middle text-center">
+    <thead>
+        <tr>
+            <th>STT</th>
+            <th>Hãng sản xuất</th>
+            <th>Chức năng</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            count++;
+            <tr>
+                <td>@count</td>
+                <td>@item.ten_hang</td>
+                <td>
+                    <div class="d-flex align-items-center justify-content-center column-gap-3">
+                        <a href="@Url.Action("ManufacturerEdit","Admin", new { id = item.id })" class="text-primary" title="Sửa hãng sản xuất">
+                            <i class="fa-solid fa-pen"></i>
+                        </a>
+                        <a href="@Url.Action("ManufacturerDelete","Admin", new { id = item.id })" class="text-body-secondary" title="Xoá hãng sản xuất" onclick="return confirm('Bạn có muốn xoá hãng sản xuất?')">
+                            <i class="fa-solid fa-trash"></i>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@Html.PagedListPager(Model, page => Url.Action("ManufacturerSearch", new { page }),
+new PagedListRenderOptions
+{
+    LiElementClasses = new List<string> { "page-manufacturer" },
+})
+
+
+

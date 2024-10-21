@@ -1,0 +1,70 @@
+﻿@model ShopDienThoai.Models.nha_cung_cap
+@{
+    ViewBag.Title = "Cập nhật nhà cung cấp";
+    Layout = "~/Views/Admin/Layout/_Layout.cshtml";
+}
+
+<div class="p-4">
+    <h1 class="fw-bold text-uppercase text-dark-emphasis">@ViewBag.Title</h1>
+    <div class="mt-4">
+        @using (Html.BeginForm("SupplierEdit", "Admin", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <input name="id" class="d-none" value="@Model.id" />
+            <div class="row row-gap-3">
+                <div class="col-6">
+                    <span class="text-danger">*</span>
+                    @Html.LabelFor(model => model.ten_nha_cung_cap, htmlAttributes: new { @class = "form-label" })
+                    <div>
+                        @Html.EditorFor(model => model.ten_nha_cung_cap, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ten_nha_cung_cap, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-6">
+                    <span class="text-danger">*</span>
+                    @Html.LabelFor(model => model.ten_nguoi_dai_dien, htmlAttributes: new { @class = "form-label" })
+                    <div>
+                        @Html.EditorFor(model => model.ten_nguoi_dai_dien, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ten_nguoi_dai_dien, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-6">
+                    @Html.LabelFor(model => model.dia_chi, htmlAttributes: new { @class = "form-label" })
+                    <div>
+                        @Html.EditorFor(model => model.dia_chi, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.dia_chi, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-6">
+                    @Html.LabelFor(model => model.so_dien_thoai, htmlAttributes: new { @class = "form-label" })
+                    <div>
+                        @Html.EditorFor(model => model.so_dien_thoai, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.so_dien_thoai, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-6">
+                    @Html.LabelFor(model => model.email, htmlAttributes: new { @class = "form-label" })
+                    <div>
+                        @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.email, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-6">
+                    @Html.LabelFor(model => model.fax, htmlAttributes: new { @class = "form-label" })
+                    <div>
+                        @Html.EditorFor(model => model.fax, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.fax, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-6 d-flex align-items-end column-gap-2">
+                    <a href="/admin/supplier" class="btn btn-outline-danger rounded-0">Huỷ</a>
+                    <button class="btn btn-success rounded-0" type="submit">Lưu</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+

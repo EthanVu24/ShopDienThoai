@@ -1,0 +1,131 @@
+﻿@model List<ShopDienThoai.Models.Cart>
+@using System.Globalization
+@{
+    ViewBag.Title = "Giỏ hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string FormatPrice(long don_gia)
+    {
+        CultureInfo culture = new CultureInfo("vi-VN");
+        string formattedAmount = string.Format(culture, "{0:0,0}", don_gia);
+        return formattedAmount;
+    }
+}
+
+<div class="bg-light py-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 mb-0"><a href="/">Trang chủ</a> <span class="mx-2 mb-0">/</span> <strong class="text-black">Giỏ hàng</strong></div>
+        </div>
+    </div>
+</div>
+
+<div class="site-section">
+    <div class="container">
+        @if (Model.Count > 0)
+        {
+            <div class="row mb-5">
+                <form class="col-md-12" method="post">
+                    <div class="site-blocks-table">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="product-thumbnail">Ảnh sản phẩm</th>
+                                    <th class="product-name">Tên sản phẩm</th>
+                                    <th class="product-price">Đơn giá</th>
+                                    <th class="product-quantity">Số lượng</th>
+                                    <th class="product-total">Thành tiền</th>
+                                    <th class="product-remove">Xoá</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr class="rowCart">
+                                        <td class="product-thumbnail">
+                                            @if (item.anh_san_pham != null)
+                                            {
+                                                <img src="data:image/jpg;base64,@Convert.ToBase64String(item.anh_san_pham)" alt="" class="img-fluid">
+                                            }
+                                            else
+                                            {
+                                                <img src="https://img.freepik.com/free-vector/oops-404-error-with-broken-robot-concept-illustration_114360-5529.jpg?w=740&t=st=1706538140~exp=1706538740~hmac=018ca23f3df63d3910e2643a461379f04b85c110ac70a1cc66d69661e55d4069" alt="" class="img-fluid">
+                                            }
+                                        </td>
+                                        <td class="product-name">
+                                            <h2 class="h5 text-black">@item.ten_san_pham</h2>
+                                        </td>
+                                        <td>
+                                            @FormatPrice(item.don_gia) VNĐ
+                                        </td>
+                                        <td>
+                                            <div class="input-group mb-3 mx-auto" style="max-width: 120px;">
+                                                <div class="input-group-prepend">
+                                                    <button class="btn btn-outline-primary js-btn-minus btnDecreQty" data-id="@item.id" type="button">-</button>
+                                                </div>
+                                                <input type="text" class="form-control text-center border-0 qtyValue" value="@item.so_luong" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-outline-primary js-btn-plus btnIncreQty" data-id="@item.id" type="button">+</button>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="totalValue">@FormatPrice(item.don_gia * item.so_luong) VNĐ</td>
+                                        <td>
+                                            <button class="btn btn-danger btnDeleteItem" data-id="@item.id">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+            </div>
+
+
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="row mb-5">
+                        <div class="col-md-6">
+                            <a href="/" class="btn btn-primary btn-sm btn-block">Tiếp tục mua sắm</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 pl-5">
+                    <div class="row justify-content-end">
+                        <div class="col-md-7">
+                            <div class="row">
+                                <div class="col-md-12 text-right border-bottom mb-5">
+                                    <h3 class="text-black h4 text-uppercase">Tổng tiền</h3>
+                                </div>
+                            </div>
+                            <div class="row mb-5">
+                                <div class="col-md-6">
+                                    <span class="text-black">Tổng cộng:</span>
+                                </div>
+                                <div class="col-md-6 text-right">
+                                    <strong class="text-black" id="totalPrice"></strong>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <a href="/dat-hang" class="btn btn-primary btn-lg py-3 w-100">Đặt hàng</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <h1 class="text-center fw-bold text-uppercase">Giỏ hàng trống</h1>
+        }
+    </div>
+</div>
+

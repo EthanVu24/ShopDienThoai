@@ -1,0 +1,251 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link href="~/Assets/Fonts/icomoon/style.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/magnific-popup.css" rel="stylesheet" />
+    <link href="~/Content/jquery-ui.css" rel="stylesheet" />
+    <link href="~/Content/owl.carousel.min.css" rel="stylesheet" />
+    <link href="~/Content/owl.theme.default.min.css" rel="stylesheet" />
+    <link href="~/Content/aos.css" rel="stylesheet" />
+    <link href="~/Content/style.css" rel="stylesheet" />
+    <link href="~/Content/main.css" rel="stylesheet" />
+
+    <script src="~/Scripts/jquery-3.7.1.min.js"></script>
+</head>
+<body>
+    <div class="site-wrap">
+        @Html.Partial("~/Views/Shared/Navbar.cshtml")
+
+        @RenderBody()
+
+        @Html.Partial("~/Views/Shared/Footer.cshtml")
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @if (TempData["SweetAlert"] != null)
+    {
+        <script>
+        var sweetAlertData = '@TempData["SweetAlert"]';
+        var sweetAlertDataArray = sweetAlertData.split('|');
+        var sweetAlertType = sweetAlertDataArray[0];
+        var sweetAlertMessage = sweetAlertDataArray[1];
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 5000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+        Toast.fire({
+            icon: sweetAlertType,
+            title: sweetAlertMessage
+        });
+        </script>
+    }
+
+
+    <script src="~/Scripts/bootstrap.bundle.min.js"></script>
+    <script src="~/Scripts/jquery-ui.js"></script>
+    <script src="~/Scripts/popper.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/owl.carousel.min.js"></script>
+    <script src="~/Scripts/jquery.magnific-popup.min.js"></script>
+    <script src="~/Scripts/aos.js"></script>
+    <script src="~/Scripts/main.js"></script>
+
+
+    <script>
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 5000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+            }
+        });
+
+        function fetchDataCategories() {
+            $.ajax({
+                url: '/Home/GetProductCategories',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    $.each(data, function (index, category) {
+                        $('#subMenu').append('<li><a href="/hang-dien-thoai?cate=' + category.id + '">' +
+                            category.ten_hang + '</a></li>');
+                    });
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+
+        function addToCart(id) {
+            $.ajax({
+                url: '/Home/AddToCart',
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                    id
+                },
+                success: function (data) {
+                    if (data.status) {
+                        Toast.fire({
+                            icon: "success",
+                            title: "Thêm vào giỏ hàng thành công"
+                        });
+                    } else {
+                        Toast.fire({
+                            icon: "error",
+                            title: "Sản phẩm đã có trong giỏ hàng"
+                        });
+                    }
+                    GetTotalQtyCart();
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+
+        function loadTotalPrice() {
+            var totalPrice = $("#totalPrice");
+            $.ajax({
+                url: '/Home/GetTotalPrice',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    totalPrice.text(data.thanhTien)
+                }
+            });
+        }
+
+        function GetTotalQtyCart() {
+            var count = $(".count");
+            $.ajax({
+                url: '/Home/GetTotalQtyCart',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    count.text(data.total)
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            GetTotalQtyCart();
+            fetchDataCategories();
+            loadTotalPrice();
+
+            var btnAddToCart = $("#addToCart");
+            btnAddToCart.on("click", function () {
+                var id = $(this).data('id');
+                addToCart(id);
+            });
+
+            var btnIncreQty = $(".btnIncreQty");
+            btnIncreQty.on("click", function () {
+                var id = $(this).data('id');
+                var rowCart = $(this).closest(".rowCart");
+                var qtyValue = rowCart.find(".qtyValue");
+                var totalValue = rowCart.find(".totalValue");
+                $.ajax({
+                    url: '/Home/IncreQtyCart',
+                    type: 'GET',
+                    dataType: 'json',
+                    data: {
+                        id
+                    },
+                    success: function (data) {
+                        if (data.status) {
+                            Toast.fire({
+                                icon: "success",
+                                title: "Thêm số lượng sản phẩm thành công"
+                            });
+                            qtyValue.val(data.soLuong);
+                            totalValue.text(data.thanhTien);
+                            loadTotalPrice();
+                        } else {
+                            Toast.fire({
+                                icon: "error",
+                                title: "Số lượng sản phẩm trong kho không đủ"
+                            });
+                        }
+                    }
+                });
+            });
+
+            var btnDecreQty = $(".btnDecreQty");
+            btnDecreQty.on("click", function () {
+                var id = $(this).data('id');
+                var rowCart = $(this).closest(".rowCart");
+                var qtyValue = rowCart.find(".qtyValue");
+                var totalValue = rowCart.find(".totalValue");
+                $.ajax({
+                    url: '/Home/DecreQtyCart',
+                    type: 'GET',
+                    dataType: 'json',
+                    data: {
+                        id
+                    },
+                    success: function (data) {
+                        if (data.status) {
+                            Toast.fire({
+                                icon: "success",
+                                title: "Giảm số lượng sản phẩm thành công"
+                            });
+                            qtyValue.val(data.soLuong);
+                            totalValue.text(data.thanhTien);
+                            loadTotalPrice();
+                        } else {
+                            location.reload(true);
+                            loadTotalPrice();
+                            Toast.fire({
+                                icon: "success",
+                                title: "Xoá sản phẩm khỏi giỏ hàng thành công"
+                            });
+                        }
+                    }
+                });
+            });
+
+            var btnDeleteItem = $(".btnDeleteItem");
+            btnDeleteItem.on("click", function () {
+                var id = $(this).data('id');
+                var rowCart = $(this).closest(".rowCart");
+                $.ajax({
+                    url: '/Home/DeleteItemCart',
+                    type: 'GET',
+                    dataType: 'json',
+                    data: {
+                        id
+                    },
+                    success: function (data) {
+                        if (data.status) {
+                            location.reload(true);
+                            loadTotalPrice();
+                            Toast.fire({
+                                icon: "success",
+                                title: "Xoá sản phẩm khỏi giỏ hàng thành công"
+                            });
+                        }
+                    }
+                });
+            });
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+﻿@{
+    var user = Session["user"] as ShopDienThoai.Models.tai_khoan;
+}
+
+<header class="site-navbar" role="banner">
+    <div class="site-navbar-top">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-6 col-md-4 order-2 order-md-1 site-search-icon text-left">
+                    <form action="/san-pham/tim-kiem" method="get" class="site-block-top-search">
+                        <span class="icon icon-search2"></span>
+                        <input type="text" class="form-control border-0" name="name" placeholder="Tìm kiếm...">
+                    </form>
+                </div>
+
+                <div class="col-12 mb-3 mb-md-0 col-md-4 order-1 order-md-2 text-center">
+                    <div class="site-logo">
+                        <a href="/" class="js-logo-clone text-decoration-none">Mobile Shop</a>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-4 order-3 order-md-3">
+                    <div class="site-top-icons d-flex justify-content-end">
+                        <ul>
+                            @if (user != null)
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle fs-3" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <span>@user.ho_ten</span>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                        <li class="d-block"><a class="dropdown-item" href="/thong-tin-tai-khoan">Thông tin tài khoản</a></li>
+                                        <li class="d-block"><a class="dropdown-item" href="/auth/logout">Đăng xuất</a></li>
+                                    </ul>
+                                </li>
+                            }
+                            else
+                            {
+                                <li>
+                                    <a href="/auth/login" class="text-decoration-none">
+                                        <span class="icon icon-person"></span>
+                                    </a>
+
+                                </li>
+                            }
+                            <li>
+                                <a href="/gio-hang" class="site-cart text-decoration-none">
+                                    <span class="icon icon-shopping_cart"></span>
+                                    <span class="count"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <nav class="site-navigation text-right text-md-center" role="navigation">
+        <div class="container">
+            <ul class="site-menu js-clone-nav d-none d-md-block">
+                <li class="active">
+                    <a href="/">Trang chủ</a>
+                </li>
+                <li class="has-children">
+                    <a href="javascript:void(0)">Hãng điện thoại</a>
+                    <ul class="dropdown" id="subMenu"></ul>
+                </li>
+                <li><a href="/don-hang">Đơn hàng của tôi</a></li>
+            </ul>
+        </div>
+    </nav>
+</header>

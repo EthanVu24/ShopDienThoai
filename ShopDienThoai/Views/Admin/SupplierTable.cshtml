@@ -1,0 +1,54 @@
+﻿@model PagedList.IPagedList<ShopDienThoai.Models.nha_cung_cap>
+@using PagedList.Mvc;
+@{
+    int count = 0;
+}
+
+<table class="table table-bordered table-hover w-full align-middle text-center">
+    <thead>
+        <tr>
+            <th>STT</th>
+            <th>Nhà cung cấp</th>
+            <th>Người đại diện</th>
+            <th>Email</th>
+            <th>Số điện thoại</th>
+            <th>Địa chỉ</th>
+            <th>Fax</th>
+            <th>Chức năng</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            count++;
+            <tr>
+                <td>@count</td>
+                <td>@item.ten_nha_cung_cap</td>
+                <td>@item.ten_nguoi_dai_dien</td>
+                <td>@item.email</td>
+                <td>@item.so_dien_thoai</td>
+                <td>@item.dia_chi</td>
+                <td>@item.fax</td>
+                <td>
+                    <div class="d-flex align-items-center justify-content-center column-gap-3">
+                        <a href="@Url.Action("SupplierEdit","Admin", new { id = item.id })" class="text-primary" title="Sửa nhà cung cấp">
+                            <i class="fa-solid fa-pen"></i>
+                        </a>
+                        <a href="@Url.Action("SupplierDelete","Admin", new { id = item.id })" class="text-body-secondary" title="Xoá nhà cung cấp" onclick="return confirm('Bạn có muốn xoá nhà cung cấp?')">
+                            <i class="fa-solid fa-trash"></i>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@Html.PagedListPager(Model, page => Url.Action("SupplierSearch", new { page }),
+new PagedListRenderOptions
+{
+    LiElementClasses = new List<string> { "page-supplier" },
+})
+
+
+
+

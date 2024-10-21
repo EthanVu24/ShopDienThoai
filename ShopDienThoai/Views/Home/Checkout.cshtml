@@ -1,0 +1,89 @@
+﻿@model ShopDienThoai.Models.hoa_don
+@using System.Globalization
+@{
+    ViewBag.Title = "Giỏ hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string FormatPrice(long don_gia)
+    {
+        CultureInfo culture = new CultureInfo("vi-VN");
+        string formattedAmount = string.Format(culture, "{0:0,0}", don_gia);
+        return formattedAmount;
+    }
+    var cart = Session["Cart"] as List<ShopDienThoai.Models.Cart>;
+}
+
+<div class="bg-light py-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 mb-0"><a href="/">Trang chủ</a> <span class="mx-2 mb-0">/</span> <a href="/gio-hang">Giỏ hàng</a> <span class="mx-2 mb-0">/</span> <strong class="text-black">Đặt hàng</strong></div>
+        </div>
+    </div>
+</div>
+
+<div class="site-section">
+    <div class="container">
+        @using (Html.BeginForm("Checkout", "Home", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="row">
+                <div class="col-md-6 mb-5 mb-md-0">
+                    <h2 class="h3 mb-3 text-black text-uppercase">Thông tin người đặt hàng</h2>
+                    <div class="form-group row">
+                        <div class="col-md-12 mb-3">
+                            @Html.LabelFor(model => model.dia_chi, htmlAttributes: new { @class = "text-black" })
+                            @Html.EditorFor(model => model.dia_chi, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.dia_chi, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            @Html.LabelFor(model => model.so_dien_thoai, htmlAttributes: new { @class = "text-black" })
+                            @Html.EditorFor(model => model.so_dien_thoai, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.so_dien_thoai, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" id="flexRadioDefault2" checked>
+                                <label class="form-check-label" for="flexRadioDefault2">
+                                    Thanh toán khi nhận hàng
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="row mb-5">
+                        <div class="col-md-12">
+                            <h2 class="h3 mb-3 text-black text-uppercase">Đơn hàng của bạn</h2>
+                            <div class="p-3 p-lg-5 border">
+                                <table class="table site-block-order-table mb-5">
+                                    <thead>
+                                        <tr>
+                                            <th>Sản phẩm</th>
+                                            <th>Tổng tiền</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in cart)
+                                        {
+                                            <tr>
+                                                <td>@item.ten_san_pham <strong class="mx-2">x</strong> @item.so_luong</td>
+                                                <td>@FormatPrice(item.don_gia * item.so_luong) VNĐ</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                                <div class="form-group">
+                                    <button class="btn btn-primary btn-lg py-3 w-100" type="submit">Đặt hàng</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        }
+    </div>
+</div>
+

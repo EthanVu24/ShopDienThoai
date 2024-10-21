@@ -1,0 +1,103 @@
+﻿@model ShopDienThoai.Models.san_pham
+@using System.Globalization
+@{
+    ViewBag.Title = "Chi tiết sản phẩm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string FormatPrice(long don_gia, int? giam_gia)
+    {
+        long? price = 0;
+        if (giam_gia.HasValue)
+        {
+            price = don_gia - (don_gia * giam_gia / 100);
+        }
+        else
+        {
+            price = don_gia;
+        }
+        CultureInfo culture = new CultureInfo("vi-VN");
+        string formattedAmount = string.Format(culture, "{0:0,0}", price);
+        return formattedAmount;
+    }
+}
+
+<div class="bg-light py-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 mb-0"><a href="/">Trang chủ</a> <span class="mx-2 mb-0">/</span> <strong class="text-black">@Model.ten_san_pham</strong></div>
+        </div>
+    </div>
+</div>
+
+<div class="site-section">
+    <div class="container">
+        <div class="row column-gap-5">
+            <div class="col-md-5 bg-white p-4">
+                <img src="data:image/jpg;base64,@Convert.ToBase64String(Model.anh_san_pham)" alt="Image" class="img-fluid">
+            </div>
+            <div class="col-md-6">
+                <h2 class="text-black">@Model.ten_san_pham</h2>
+                <div class="my-3">
+                    <div class="row mb-2">
+                        <div class="col-6">Màn hình:</div>
+                        <div class="col-6">@Model.chi_tiet_san_pham.man_hinh</div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-6">Độ phân giải:</div>
+                        <div class="col-6">@Model.chi_tiet_san_pham.do_phan_giai</div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-6">Camera trước:</div>
+                        <div class="col-6">@Model.chi_tiet_san_pham.cam_truoc MP</div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-6">Camera sau:</div>
+                        <div class="col-6">@Model.chi_tiet_san_pham.cam_sau MP</div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-6">CPU:</div>
+                        <div class="col-6">@Model.chi_tiet_san_pham.cpu</div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-6">Ram:</div>
+                        <div class="col-6">@Model.chi_tiet_san_pham.ram GB</div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-6">Dung lượng lưu trữ:</div>
+                        <div class="col-6">@Model.chi_tiet_san_pham.rom GB</div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-6">Sim:</div>
+                        <div class="col-6">@Model.chi_tiet_san_pham.sim Sim</div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-6">Chân sạc:</div>
+                        <div class="col-6">@Model.chi_tiet_san_pham.chan_sac</div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-6">Dung lượng pin:</div>
+                        <div class="col-6">@Model.chi_tiet_san_pham.dung_luong_pin mAh</div>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center mb-3">
+                    <h3 class="text-black mb-0 pe-2">@FormatPrice(Model.don_gia, Model.giam_gia) VNĐ</h3>
+                    <p class="mb-0 text-decoration-line-through">
+                        @if (Model.giam_gia > 0)
+                        {
+                            @FormatPrice(Model.don_gia, null)
+                        }
+                    </p>
+                </div>
+                <p>
+                    @if (Model.so_luong > 0)
+                    {
+                        <button class="buy-now btn btn-sm btn-primary" id="addToCart" data-id="@Model.id">Thêm vào giỏ hàng</button>
+                    }
+                    else {
+                        <button class="buy-now btn btn-sm btn-secondary" disabled>Hết hàng</button>
+                    }
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+

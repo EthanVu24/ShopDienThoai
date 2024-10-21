@@ -1,0 +1,23 @@
+﻿@{ 
+    var user = Session["user"] as ShopDienThoai.Models.tai_khoan;
+}
+
+<nav class="d-flex justify-content-between align-items-center bg-white px-4 py-2">
+    <div class="fs-3" id="hambuger">
+        <i class="fa-solid fa-bars"></i>
+    </div>
+    <ul class="navbar-nav">
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle fs-3" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                @if (user != null)
+                {
+                    <span>@(user.id_vai_tro == 1 ? "Admin:" : "Nhân viên:") @user.ho_ten</span>
+                }
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="/auth/logout">Đăng xuất</a></li>
+            </ul>
+        </li>
+    </ul>
+</nav>
+

@@ -1,0 +1,67 @@
+﻿
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Admin/Layout/_Layout.cshtml";
+}
+
+<div class="p-4">
+    <h1 class="fw-bold text-uppercase text-dark-emphasis">@ViewBag.Title</h1>
+    <div class="row gx-4 gy-4 mt-3">
+        <div class="col-4">
+            <div class="d-flex align-items-center justify-content-between bg-primary px-4 rounded-2 shadow" style="min-height: 180px;">
+                <div class="d-flex align-items-center fs-3 text-white flex-column">
+                    <i class="fa-solid fa-mobile-screen-button fs-1"></i>
+                    <span class="fw-bold py-2 text-uppercase">Sản phẩm</span>
+                </div>
+                <div class="fs-1 text-white fw-bold">
+                    @ViewBag.products
+                </div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="d-flex align-items-center justify-content-between bg-danger px-4 rounded-2 shadow" style="min-height: 180px;">
+                <div class="d-flex align-items-center fs-3 text-white flex-column">
+                    <i class="fa-solid fa-user fs-1"></i>
+                    <span class="fw-bold py-2 text-uppercase">Tài khoản</span>
+                </div>
+                <div class="fs-1 text-white fw-bold">
+                    @ViewBag.accounts
+                </div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="d-flex align-items-center justify-content-between bg-success px-4 rounded-2 shadow" style="min-height: 180px;">
+                <div class="d-flex align-items-center fs-3 text-white flex-column">
+                    <i class="fa-solid fa-cart-shopping fs-1"></i>
+                    <span class="fw-bold py-2 text-uppercase">Đơn hàng</span>
+                </div>
+                <div class="fs-1 text-white fw-bold">
+                    @ViewBag.orders
+                </div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="d-flex align-items-center justify-content-between bg-info px-4 rounded-2 shadow" style="min-height: 180px;">
+                <div class="d-flex align-items-center fs-3 text-white flex-column">
+                    <i class="fa-solid fa-users"></i>
+                    <span class="fw-bold py-2 text-uppercase">Khách hàng</span>
+                </div>
+                <div class="fs-1 text-white fw-bold">
+                    @ViewBag.clients
+                </div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="d-flex align-items-center justify-content-between bg-secondary px-4 rounded-2 shadow" style="min-height: 180px;">
+                <div class="d-flex align-items-center fs-3 text-white flex-column">
+                    <i class="fa-solid fa-truck-field"></i>
+                    <span class="fw-bold py-2 text-uppercase">Nhà cung cấp</span>
+                </div>
+                <div class="fs-1 text-white fw-bold">
+                    @ViewBag.suppliers
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/main.css" rel="stylesheet" />
+    <link href="~/Content/PagedList.css" rel="stylesheet" />
+</head>
+<body>
+    <div>
+        @Html.Partial("~/Views/Admin/Layout/Sidebar.cshtml")
+        <div id="content" style="margin-left: 18rem;">
+            @Html.Partial("~/Views/Admin/Layout/Navbar.cshtml")
+            <div class="bg-secondary-subtle p-3">
+                <div class="bg-white" style="min-height: calc(100vh - 106px);">
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/Scripts/bootstrap.bundle.min.js"></script>
+    <script src="~/Scripts/jquery-3.7.1.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <script src="~/Scripts/modernizr-2.8.3.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @if (TempData["SweetAlert"] != null)
+    {
+        <script>
+        var sweetAlertData = '@TempData["SweetAlert"]';
+        var sweetAlertDataArray = sweetAlertData.split('|');
+        var sweetAlertType = sweetAlertDataArray[0];
+        var sweetAlertMessage = sweetAlertDataArray[1];
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 5000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+        Toast.fire({
+            icon: sweetAlertType,
+            title: sweetAlertMessage
+        });
+        </script>
+    }
+    <script src="~/Assets/Sidebar.js"></script>
+    <script src="~/Assets/App.js"></script>
+</body>
+</html>

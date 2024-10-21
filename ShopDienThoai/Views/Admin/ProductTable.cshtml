@@ -1,0 +1,103 @@
+﻿@model PagedList.IPagedList<ShopDienThoai.Models.san_pham>
+@using System.Globalization
+@using PagedList.Mvc;
+@{
+    int count = 0;
+    string FormatPrice(long don_gia, int? giam_gia) {
+        long? price = 0;
+        if (giam_gia.HasValue)
+        {
+            price = don_gia - (don_gia * giam_gia / 100);
+        }
+        else {
+            price = don_gia;
+        }
+        CultureInfo culture = new CultureInfo("vi-VN");
+        string formattedAmount = string.Format(culture, "{0:0,0}", price);
+        return formattedAmount;
+    }
+}
+
+<div style="overflow: auto scroll;">
+    <table class="table table-bordered table-hover align-middle text-center"
+           style="width: max-content; min-width: 100%; table-layout: fixed;">
+        <thead>
+            <tr>
+                <th>STT</th>
+                <th>Ảnh sản phẩm</th>
+                <th>Tên sản phâm</th>
+                <th>Số lượng</th>
+                <th>Giá gốc</th>
+                <th>Giảm giá</th>
+                <th>Giá hiện tại</th>
+                <th>Hãng sản xuất</th>
+                <th>Nhà cung cấp</th>
+                <th>Màn hình</th>
+                <th>Độ phân giải</th>
+                <th>Tần số quét</th>
+                <th>Cam sau</th>
+                <th>Cam trước</th>
+                <th>CPU</th>
+                <th>Ram</th>
+                <th>Dung lượng lưu trữ</th>
+                <th>Sim</th>
+                <th>Chân sạc</th>
+                <th>Dung lượng pin</th>
+                <th>Chức năng</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                count++;
+                
+                <tr>
+                    <td>@count</td>
+                    <td>
+                        @if (item.anh_san_pham == null)
+                        {
+                            <div class="bg-dark-subtle mx-auto" style="width: 100px; height: 150px;"></div>
+                        }
+                        else
+                        {
+                            <img src="data:image/jpg;base64,@Convert.ToBase64String(item.anh_san_pham)" class="d-block mx-auto object-fit-contain" width="100" height="150" />
+                        }
+                    </td>
+                    <td>@item.ten_san_pham</td>
+                    <td>@item.so_luong</td>
+                    <td>@FormatPrice(item.don_gia, null)</td>
+                    <td>@item.giam_gia %</td>
+                    <td>@FormatPrice(item.don_gia, item.giam_gia)</td>
+                    <td>@item.hang_san_xuat.ten_hang</td>
+                    <td>@item.nha_cung_cap.ten_nha_cung_cap</td>
+                    <td>@item.chi_tiet_san_pham.man_hinh</td>
+                    <td>@item.chi_tiet_san_pham.do_phan_giai</td>
+                    <td>@item.chi_tiet_san_pham.tan_so_quet Hz</td>
+                    <td>@item.chi_tiet_san_pham.cam_sau MP</td>
+                    <td>@item.chi_tiet_san_pham.cam_truoc MP</td>
+                    <td>@item.chi_tiet_san_pham.cpu</td>
+                    <td>@item.chi_tiet_san_pham.ram GB</td>
+                    <td>@item.chi_tiet_san_pham.rom GB</td>
+                    <td>@item.chi_tiet_san_pham.sim Sim</td>
+                    <td>@item.chi_tiet_san_pham.chan_sac</td>
+                    <td>@item.chi_tiet_san_pham.dung_luong_pin mAh</td>
+                    <td>
+                        <div class="d-flex align-items-center justify-content-center column-gap-3">
+                            <a href="@Url.Action("ProductEdit","Admin", new { id = item.id })" class="text-primary" title="Sửa sản phẩm">
+                                <i class="fa-solid fa-pen"></i>
+                            </a>
+                            <a href="@Url.Action("ProductDelete","Admin", new { id = item.id })" class="text-body-secondary" title="Xoá sản phẩm" onclick="return confirm('Bạn có muốn xoá sản phẩm?')">
+                                <i class="fa-solid fa-trash"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+@Html.PagedListPager(Model, page => Url.Action("ProductSearch", new { page }),
+new PagedListRenderOptions
+{
+    LiElementClasses = new List<string> { "page-product" },
+})
